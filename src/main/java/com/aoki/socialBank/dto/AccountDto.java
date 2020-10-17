@@ -5,6 +5,8 @@ import java.util.Date;
 
 import javax.persistence.PrePersist;
 
+import com.aoki.socialBank.entity.Person;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,13 +22,12 @@ public class AccountDto implements Serializable {
 
 	private Long id;
 
+	//@NotEmpty(message = "number nao poder ser vazio")
 	private int number;
 
-	private int agency;
-
 	private float amount;
-	
-	private PersonDto personDto;
+
+	private Person person;
 
 	private Date dateCreate;
 
@@ -46,12 +47,8 @@ public class AccountDto implements Serializable {
 
 	@Override
 	public String toString() {
-		return "AccountDto [id=" + id + ", number=" + number 
-				+ ", agency=" + agency + ", amount=" + amount
-				+ ", personDto=" + personDto + ", dateCreate=" 
-				+ dateCreate + ", dateModify=" + dateModify + "]";
+		return "AccountDto [id=" + id + ", number=" + number + ", amount=" + amount + ", personDto=" + person
+				+ ", dateCreate=" + dateCreate + ", dateModify=" + dateModify + "]";
 	}
-
-	
 
 }

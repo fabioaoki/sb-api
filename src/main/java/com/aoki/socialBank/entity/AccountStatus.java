@@ -38,9 +38,10 @@ public class AccountStatus implements Serializable {
 
 	private AccountDto accountDto;
 
-	@Column(name = "reason", nullable = false)
-	private String reason;
-
 	private Date dateModify;
+	
+	@Column(name = "situacao_conta", nullable = false)
+	private SituacaoConta situacaoConta;
+	
 
 }

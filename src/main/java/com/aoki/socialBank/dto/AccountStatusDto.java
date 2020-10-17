@@ -23,7 +23,7 @@ public class AccountStatusDto implements Serializable {
 	private String reason;
 
 	private Date dateModify;
-
+	
 	@PrePersist
 	public AccountDto prePersist(AccountStatusDto accountDtoStatusDto) {
 		final Date atual = new Date();
