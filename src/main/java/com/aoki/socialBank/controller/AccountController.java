@@ -42,14 +42,13 @@ public class AccountController {
 		if (Objects.nonNull(id)) {
 			try {
 				AccountDto accountDto = accountService.findAccount(id);
-				
 				return new ResponseEntity<AccountDto>(accountDto, HttpStatus.OK);
 			} catch (Exception e) {
 				e.getMessage();
 			}
 		}
 		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-	}
+	} 
 	
 	@RequestMapping(value = "/account/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<AccountDto> deleteAccount(@PathVariable(value = "id") long id) {
