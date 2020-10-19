@@ -23,7 +23,7 @@ public class SwaggerConfig {
 	}
 
 	private ApiInfo apiInfo() {
-		return new ApiInfoBuilder().title("Swagger API")
+		return new ApiInfoBuilder().title("Swagger API - Social Bank - Teste")
 				.description("Documentação da API de acesso aos endpoints com Swagger").version("1.0").build();
 	}
 }
