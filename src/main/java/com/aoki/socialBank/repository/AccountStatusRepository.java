@@ -7,5 +7,7 @@ import com.aoki.socialBank.entity.AccountStatus;
 public interface AccountStatusRepository extends JpaRepository<AccountStatus, Long>{
 	
 	AccountStatus findById(long id);
+
+	AccountStatus findByAccountId(long id);
 	
 }

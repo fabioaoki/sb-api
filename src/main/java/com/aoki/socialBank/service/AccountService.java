@@ -36,7 +36,7 @@ public class AccountService {
 				.person(person).build();
 		accountRepository.save(account);
 		AccountStatus accountStatus = new AccountStatus();
-		accountStatus.setSituacaoConta(SituationAccount.BLOQUEIO_SITUACAO_INICIAL.toString());
+		accountStatus.setAccountSituation(SituationAccount.BLOQUEIO_SITUACAO_INICIAL.toString());
 		accountStatus.setAccount(account);
 		accountStatusRepository.save(accountStatus);
 	}

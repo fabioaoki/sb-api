@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -37,20 +36,19 @@ public class AccountStatusController {
 			AccountStatusDto accountStatusDto = new AccountStatusDto();
 			accountStatusDto.prePersist(accountStatusDto);
 			accountStatusService.unblock(accountDto.getId(), accountStatusDto);
-			return new ResponseEntity<AccountStatusDto>(HttpStatus.CREATED);
+			return new ResponseEntity<AccountStatusDto>(HttpStatus.OK);
 		}
 		return new ResponseEntity<AccountStatusDto>(HttpStatus.BAD_REQUEST);
 	}
 
 	@RequestMapping(value = "/account/block/{id}", method = RequestMethod.POST)
-	public ResponseEntity<AccountStatusDto> block(@PathVariable(value = "id") long id,
-			@RequestBody AccountDto accountDto) throws Exception {
+	public ResponseEntity<AccountStatusDto> block(@PathVariable(value = "id") long id) throws Exception {
 		AccountDto dto = accountService.findAccount(id);
 		if (Objects.nonNull(dto)) {
 			AccountStatusDto accountStatusDto = new AccountStatusDto();
 			accountStatusDto.prePersist(accountStatusDto);
 			accountStatusService.block(dto.getId(), accountStatusDto);
-			return new ResponseEntity<AccountStatusDto>(HttpStatus.CREATED);
+			return new ResponseEntity<AccountStatusDto>(HttpStatus.OK);
 		}
 		return new ResponseEntity<AccountStatusDto>(HttpStatus.BAD_REQUEST);
 	}

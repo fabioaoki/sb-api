@@ -44,7 +44,7 @@ public class AccountStatus implements Serializable {
 	private Date dateModify;
 	
 	@Column(name = "situacao_conta", nullable = false)
-	private String situacaoConta;
+	private String accountSituation;
 	
 
 }

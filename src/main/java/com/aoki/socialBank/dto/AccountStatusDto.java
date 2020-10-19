@@ -20,17 +20,17 @@ public class AccountStatusDto implements Serializable {
 
 	private Long id;
 
-	private AccountDto accountDto;
+	private AccountDto account;
 
 	private Date dateModify;
 	
-	private SituationAccount SituacaoConta;
+	private SituationAccount accountSituation;
 	
 	@PrePersist
 	public AccountDto prePersist(AccountStatusDto accountDtoStatusDto) {
 		final Date atual = new Date();
 		accountDtoStatusDto.setDateModify(atual);
-		return accountDto;
+		return account;
 	}
 
 
@@ -41,6 +41,6 @@ public class AccountStatusDto implements Serializable {
 
 	@Override
 	public String toString() {
-		return "AccountStatusDto [id=" + id + ", accountDto=" + accountDto + ", dateModify=" + dateModify + "]";
+		return "AccountStatusDto [id=" + id + ", accountDto=" + account + ", dateModify=" + dateModify + "]";
 	}
 }

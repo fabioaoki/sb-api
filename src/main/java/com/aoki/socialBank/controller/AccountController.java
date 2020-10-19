@@ -26,7 +26,7 @@ public class AccountController {
 	PersonService personService;
 
 	@RequestMapping(value = "/account/{id}", method = RequestMethod.POST)
-	public ResponseEntity<AccountDto> cadastro(@PathVariable(value = "id") long id, @RequestBody AccountDto accountDto)
+	public ResponseEntity<AccountDto> registerAccount(@PathVariable(value = "id") long id, @RequestBody AccountDto accountDto)
 			throws Exception {
 		PersonDto personDto = personService.findId(id);
 		if (Objects.nonNull(accountDto) && personService.findId(personDto.getId()) != null) {
