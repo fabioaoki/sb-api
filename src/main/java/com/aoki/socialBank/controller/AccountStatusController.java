@@ -54,7 +54,7 @@ public class AccountStatusController {
 	}
 	
 	@RequestMapping(value = "/account/{id}/status", method = RequestMethod.GET)
-	public ResponseEntity<List<AccountStatusDto>> ee(@PathVariable(value = "id") long id
+	public ResponseEntity<List<AccountStatusDto>> findAccoountStatus(@PathVariable(value = "id") long id
 			) throws Exception {
 		List<AccountStatusDto> accountStatusDto = accountStatusService.findAccountStatusById(id);
 		if (Objects.nonNull(accountStatusDto)) {
