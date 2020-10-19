@@ -52,10 +52,11 @@ public class AccountStatusController {
 		}
 		return new ResponseEntity<AccountStatusDto>(HttpStatus.BAD_REQUEST);
 	}
-
-	@RequestMapping(value = "/account", method = RequestMethod.GET)
-	public ResponseEntity<List<AccountStatusDto>> findAccount() throws Exception {
-		List<AccountStatusDto> accountStatusDto = accountStatusService.findAccountStatus();
+	
+	@RequestMapping(value = "/account/{id}/status", method = RequestMethod.GET)
+	public ResponseEntity<List<AccountStatusDto>> ee(@PathVariable(value = "id") long id
+			) throws Exception {
+		List<AccountStatusDto> accountStatusDto = accountStatusService.findAccountStatusById(id);
 		if (Objects.nonNull(accountStatusDto)) {
 			return new ResponseEntity<List<AccountStatusDto>>(accountStatusDto, HttpStatus.OK);
 		}

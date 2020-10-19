@@ -2,7 +2,6 @@ package com.aoki.socialBank.service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -57,6 +56,23 @@ public class AccountStatusService {
 					.dateModify(accountStatusList.getDateModify())
 					.accountSituation(accountSituation)
 					.account(AccountDto.builder().id(account.getId()).build())
+					.build());
+		}
+		return accountStatusDtos;
+	}
+
+	public List<AccountStatusDto> findAccountStatusById(long id) {
+		List<AccountStatus> accountStatus = accountStatusRepository.findAllByAccountId(id);
+		List<AccountStatusDto> accountStatusDtos = new ArrayList<>();
+		Account account = accountRepository.findById(id);
+
+		for (AccountStatus accountStatusList : accountStatus) {
+			SituationAccount accountSituation = Enum.valueOf(SituationAccount.class, accountStatusList.getAccountSituation().toString());
+			accountStatusDtos.add(AccountStatusDto.builder().id(accountStatusList.getId())
+					.dateModify(accountStatusList.getDateModify())
+					.accountSituation(accountSituation)
+					.account(AccountDto.builder().id(account.getId())
+							.number(account.getNumber()).amount(account.getAmount()).dateCreate(account.getDateCreate()).build())
 					.build());
 		}
 		return accountStatusDtos;
