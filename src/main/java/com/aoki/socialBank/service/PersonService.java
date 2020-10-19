@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.aoki.socialBank.dto.PersonDto;
 import com.aoki.socialBank.entity.Person;
+import com.aoki.socialBank.exception.PersonException;
 import com.aoki.socialBank.repository.PersonRepopsitory;
 
 @Service
@@ -21,14 +22,15 @@ public class PersonService {
 		personRepository.save(person);
 	}
 
-	public PersonDto findId(long id) throws Exception {
+	public PersonDto findId(long id) throws PersonException {
 		Person person = personRepository.findById(id);
 		if(Objects.nonNull(person)) {
 			return PersonDto.builder().id(person.getId()).name(person.getName())
 					.address(person.getAddress()).birthDate(person.getBirthDate())
 					.email(person.getEmail()).build();
+		} else {
+			throw new PersonException("id nao encontrado");
 		}
-		throw new Exception("id nao encontrado");
 	}
 
 	public void alterRegister(PersonDto dto) {
@@ -37,7 +39,12 @@ public class PersonService {
 		personRepository.save(person);
 	}
 
-	public void delete(long id) {
-		personRepository.deleteById(id);
+	public void delete(long id) throws PersonException {
+		Person person = personRepository.findById(id);
+		if(Objects.nonNull(person)) {
+			personRepository.deleteById(id);
+		} else {
+			throw new PersonException("Id nao encontrado");
+		}
 	}
 }

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.aoki.socialBank.dto.PersonDto;
+import com.aoki.socialBank.exception.PersonException;
 import com.aoki.socialBank.responses.Response;
 import com.aoki.socialBank.service.PersonService;
 
@@ -41,50 +42,62 @@ public class PersonController {
 	}
 
 	@RequestMapping(value = "/person/{id}", method = RequestMethod.GET)
-	public ResponseEntity<PersonDto> findPerson(@PathVariable(value = "id") long id) throws Exception {
+	public ResponseEntity<PersonDto> findPerson(@PathVariable(value = "id") long id) throws Exception, PersonException {
 		if (Objects.nonNull(id)) {
 			try {
 				PersonDto personDto = personService.findId(id);
 				return new ResponseEntity<PersonDto>(personDto, HttpStatus.OK);
-			} catch (Exception e) {
-				e.getMessage();
+			} catch (PersonException e) {
+				System.out.println(e.getMessage());
+				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 			}
+		} else {
+			throw new PersonException("Deve passar um id de pessoa");
 		}
-		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	}
 
 	@RequestMapping(value = "/person/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<PersonDto> alterRegister(@PathVariable(value = "id") long id, @RequestBody PersonDto dto)
-			throws Exception {
-		try {
-			PersonDto personDto = personService.findId(id);
-			dto.setId(personDto.getId());
-			if (dto.getBirthDate() == null) {
-				dto.setBirthDate(personDto.getBirthDate());
+			throws PersonException {
+		if (Objects.nonNull(id)) {
+			try {
+				PersonDto personDto = personService.findId(id);
+				dto.setId(personDto.getId());
+				if (dto.getBirthDate() == null) {
+					dto.setBirthDate(personDto.getBirthDate());
+				}
+				if (dto.getAddress() == null) {
+					dto.setAddress(personDto.getAddress());
+				}
+				if (dto.getName() == null) {
+					dto.setName(personDto.getName());
+				}
+				if (dto.getEmail() == null) {
+					dto.setEmail(personDto.getEmail());
+				}
+				personService.alterRegister(dto);
+			} catch (PersonException e) {
+				System.out.println(e.getLocalizedMessage());
+				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 			}
-			if (dto.getAddress() == null) {
-				dto.setAddress(personDto.getAddress());
-			}
-			if (dto.getName() == null) {
-				dto.setName(personDto.getName());
-			}
-			if (dto.getEmail() == null) {
-				dto.setEmail(personDto.getEmail());
-			}
-			personService.alterRegister(dto);
 			return new ResponseEntity<PersonDto>(dto, HttpStatus.CREATED);
-		} catch (Exception e) {
-			return new ResponseEntity<PersonDto>(HttpStatus.BAD_REQUEST);
 		}
+		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	}
 
 	@RequestMapping(value = "/person/{id}", method = RequestMethod.DELETE)
-	public ResponseEntity<PersonDto> deletaPessoa(@PathVariable(value = "id") long id) {
-		try {
-			personService.delete(id);
-			return new ResponseEntity<>(HttpStatus.ACCEPTED);
-		} catch (Exception e) {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+	public ResponseEntity<PersonDto> deletaPessoa(@PathVariable(value = "id") long id) throws PersonException {
+		if (Objects.nonNull(id)) {
+			try {
+				personService.delete(id);
+				return new ResponseEntity<>(HttpStatus.ACCEPTED);
+			} catch (PersonException e) {
+				System.out.println(e.getMessage());
+				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			}
+		} else {
+			throw new PersonException("Deve passar um id de pessoa");
 		}
+
 	}
 }
