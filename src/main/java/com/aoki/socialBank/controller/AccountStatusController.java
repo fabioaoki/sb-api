@@ -32,22 +32,24 @@ public class AccountStatusController {
 
 	@RequestMapping(value = "/account/unblock/{id}", method = RequestMethod.POST)
 	public ResponseEntity<AccountStatusDto> unblock(@PathVariable(value = "id") long id) throws Exception {
-		if (Objects.nonNull(accountService.findAccount(id))) {
+		AccountDto accountDto = accountService.findAccount(id);
+		if (Objects.nonNull(accountDto)) {
 			AccountStatusDto accountStatusDto = new AccountStatusDto();
 			accountStatusDto.prePersist(accountStatusDto);
-			accountStatusService.unblock(accountService.findAccount(id), accountStatusDto);
+			accountStatusService.unblock(accountDto.getId(), accountStatusDto);
 			return new ResponseEntity<AccountStatusDto>(HttpStatus.CREATED);
 		}
 		return new ResponseEntity<AccountStatusDto>(HttpStatus.BAD_REQUEST);
 	}
 
-	@RequestMapping(value = "/account//block/{id}", method = RequestMethod.POST)
+	@RequestMapping(value = "/account/block/{id}", method = RequestMethod.POST)
 	public ResponseEntity<AccountStatusDto> block(@PathVariable(value = "id") long id,
 			@RequestBody AccountDto accountDto) throws Exception {
-		if (Objects.nonNull(accountService.findAccount(id))) {
+		AccountDto dto = accountService.findAccount(id);
+		if (Objects.nonNull(dto)) {
 			AccountStatusDto accountStatusDto = new AccountStatusDto();
 			accountStatusDto.prePersist(accountStatusDto);
-			accountStatusService.block(accountService.findAccount(id), accountStatusDto);
+			accountStatusService.block(dto.getId(), accountStatusDto);
 			return new ResponseEntity<AccountStatusDto>(HttpStatus.CREATED);
 		}
 		return new ResponseEntity<AccountStatusDto>(HttpStatus.BAD_REQUEST);

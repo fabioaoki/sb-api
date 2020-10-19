@@ -5,7 +5,7 @@ import java.util.Date;
 
 import javax.persistence.PrePersist;
 
-import com.aoki.socialBank.entity.SituacaoConta;
+import com.aoki.socialBank.entity.SituationAccount;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,7 +24,7 @@ public class AccountStatusDto implements Serializable {
 
 	private Date dateModify;
 	
-	private SituacaoConta SituacaoConta;
+	private SituationAccount SituacaoConta;
 	
 	@PrePersist
 	public AccountDto prePersist(AccountStatusDto accountDtoStatusDto) {

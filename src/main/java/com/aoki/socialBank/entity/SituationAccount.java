@@ -3,7 +3,7 @@ package com.aoki.socialBank.entity;
 import lombok.Getter;
 
 @Getter
-public enum SituacaoConta {
+public enum SituationAccount {
 
 	BLOQUEIO_SITUACAO_INICIAL("bloqueio_situacao_inicial"),
 	ATIVO("ativo"),
@@ -11,7 +11,7 @@ public enum SituacaoConta {
 
 	private String descricao;
 	
-	SituacaoConta(String descricao) {
+	SituationAccount(String descricao) {
 		this.descricao = descricao;
 	}
 	

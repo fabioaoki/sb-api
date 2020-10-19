@@ -10,7 +10,7 @@ import com.aoki.socialBank.dto.PersonDto;
 import com.aoki.socialBank.entity.Account;
 import com.aoki.socialBank.entity.AccountStatus;
 import com.aoki.socialBank.entity.Person;
-import com.aoki.socialBank.entity.SituacaoConta;
+import com.aoki.socialBank.entity.SituationAccount;
 import com.aoki.socialBank.repository.AccountRepository;
 import com.aoki.socialBank.repository.AccountStatusRepository;
 import com.aoki.socialBank.repository.PersonRepopsitory;
@@ -27,7 +27,7 @@ public class AccountService {
 	@Autowired
 	PersonRepopsitory personRepopsitory;
 
-	SituacaoConta situacaoConta;
+	SituationAccount situacaoConta;
 
 	public void register(AccountDto accountDto, long id) {
 		accountDto.prePersist(accountDto);
@@ -36,7 +36,7 @@ public class AccountService {
 				.person(person).build();
 		accountRepository.save(account);
 		AccountStatus accountStatus = new AccountStatus();
-		accountStatus.setSituacaoConta(SituacaoConta.BLOQUEIO_SITUACAO_INICIAL.toString());
+		accountStatus.setSituacaoConta(SituationAccount.BLOQUEIO_SITUACAO_INICIAL.toString());
 		accountStatus.setAccount(account);
 		accountStatusRepository.save(accountStatus);
 	}
@@ -44,7 +44,6 @@ public class AccountService {
 	public AccountDto findAccount(long id) throws Exception {
 		Account account = accountRepository.findById(id);
 		Person person = personRepopsitory.findById(id);
-		;
 		if (Objects.nonNull(account)) {
 			return AccountDto.builder().id(account.getId()).number(account.getNumber())
 					.amount(account.getAmount()).dateCreate(account.getDateCreate())
