@@ -6,8 +6,6 @@ import java.util.Date;
 import javax.persistence.PrePersist;
 import javax.validation.constraints.NotEmpty;
 
-import com.aoki.socialBank.entity.Person;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
