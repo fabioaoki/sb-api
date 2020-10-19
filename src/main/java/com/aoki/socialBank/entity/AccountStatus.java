@@ -3,14 +3,15 @@ package com.aoki.socialBank.entity;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
-
-import com.aoki.socialBank.dto.AccountDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -36,12 +37,14 @@ public class AccountStatus implements Serializable {
 	@Column(name = "id")
 	private Long id;
 
-	private AccountDto accountDto;
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "id")
+	private Account account;
 
 	private Date dateModify;
 	
 	@Column(name = "situacao_conta", nullable = false)
-	private SituacaoConta situacaoConta;
+	private String situacaoConta;
 	
 
 }

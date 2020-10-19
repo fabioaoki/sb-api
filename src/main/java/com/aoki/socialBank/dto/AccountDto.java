@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.PrePersist;
+import javax.validation.constraints.NotEmpty;
 
 import com.aoki.socialBank.entity.Person;
 
@@ -22,12 +23,12 @@ public class AccountDto implements Serializable {
 
 	private Long id;
 
-	//@NotEmpty(message = "number nao poder ser vazio")
+	@NotEmpty(message = "number nao poder ser vazio")
 	private int number;
 
 	private float amount;
 
-	private Person person;
+	private PersonDto person;
 
 	private Date dateCreate;
 

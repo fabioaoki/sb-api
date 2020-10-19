@@ -41,10 +41,10 @@ public class Account implements Serializable {
 	private int number;
 	
 	private float amount;
-	
+
 	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "person_id")
-	private Person personId;
+	@JoinColumn(name = "id")
+	private Person person;
 
 	private Date dateCreate;
 

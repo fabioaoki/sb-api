@@ -5,6 +5,8 @@ import java.util.Date;
 
 import javax.persistence.PrePersist;
 
+import com.aoki.socialBank.entity.SituacaoConta;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,9 +22,9 @@ public class AccountStatusDto implements Serializable {
 
 	private AccountDto accountDto;
 
-	private String reason;
-
 	private Date dateModify;
+	
+	private SituacaoConta SituacaoConta;
 	
 	@PrePersist
 	public AccountDto prePersist(AccountStatusDto accountDtoStatusDto) {
@@ -31,11 +33,14 @@ public class AccountStatusDto implements Serializable {
 		return accountDto;
 	}
 
-	@Override
-	public String toString() {
-		return "AccountStatusDto [id=" + id + ", accountDto=" 
-				+ accountDto + ", reason=" + reason + ", dateModify="
-				+ dateModify + "]";
+
+	public AccountStatusDto() {
+		// TODO Auto-generated constructor stub
 	}
 
+
+	@Override
+	public String toString() {
+		return "AccountStatusDto [id=" + id + ", accountDto=" + accountDto + ", dateModify=" + dateModify + "]";
+	}
 }
