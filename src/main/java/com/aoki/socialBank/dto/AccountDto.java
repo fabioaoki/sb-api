@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.PrePersist;
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,7 +21,7 @@ public class AccountDto implements Serializable {
 
 	private Long id;
 
-	@NotEmpty(message = "number nao poder ser vazio")
+	@NotNull(message = "number nao poder ser vazio")
 	private int number;
 
 	private float amount;

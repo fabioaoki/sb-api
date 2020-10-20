@@ -11,6 +11,7 @@ import com.aoki.socialBank.entity.Account;
 import com.aoki.socialBank.entity.AccountStatus;
 import com.aoki.socialBank.entity.Person;
 import com.aoki.socialBank.entity.SituationAccount;
+import com.aoki.socialBank.exception.AccountExceptions;
 import com.aoki.socialBank.repository.AccountRepository;
 import com.aoki.socialBank.repository.AccountStatusRepository;
 import com.aoki.socialBank.repository.PersonRepopsitory;
@@ -29,16 +30,21 @@ public class AccountService {
 
 	SituationAccount situacaoConta;
 
-	public void register(AccountDto accountDto, long id) {
-		accountDto.prePersist(accountDto);
-		Person person = personRepopsitory.findById(id);
-		Account account = Account.builder().dateCreate(accountDto.getDateCreate()).number(accountDto.getNumber())
-				.person(person).build();
-		accountRepository.save(account);
-		AccountStatus accountStatus = new AccountStatus();
-		accountStatus.setAccountSituation(SituationAccount.BLOQUEIO_SITUACAO_INICIAL.toString());
-		accountStatus.setAccount(account);
-		accountStatusRepository.save(accountStatus);
+	public void register(AccountDto accountDto, long id) throws AccountExceptions {
+		if(accountDto.getNumber() != 0) {
+			accountDto.prePersist(accountDto);
+			Person person = personRepopsitory.findById(id);
+			Account account = Account.builder().dateCreate(accountDto.getDateCreate()).number(accountDto.getNumber())
+					.person(person).build();
+			accountRepository.save(account);
+			AccountStatus accountStatus = new AccountStatus();
+			accountStatus.setAccountSituation(SituationAccount.BLOQUEIO_SITUACAO_INICIAL.toString());
+			accountStatus.setAccount(account);
+			accountStatusRepository.save(accountStatus);
+		} else {
+			throw new AccountExceptions("Problema nos dados da conta.");
+		}
+		
 	}
 
 	public AccountDto findAccount(long id) throws Exception {

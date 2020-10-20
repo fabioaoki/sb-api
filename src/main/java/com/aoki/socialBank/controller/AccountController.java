@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.aoki.socialBank.dto.AccountDto;
 import com.aoki.socialBank.dto.PersonDto;
+import com.aoki.socialBank.exception.AccountExceptions;
+import com.aoki.socialBank.exception.PersonException;
 import com.aoki.socialBank.service.AccountService;
 import com.aoki.socialBank.service.PersonService;
 
@@ -21,22 +23,34 @@ public class AccountController {
 
 	@Autowired
 	AccountService accountService;
-	
+
 	@Autowired
 	PersonService personService;
 
 	@RequestMapping(value = "/account/{id}", method = RequestMethod.POST)
-	public ResponseEntity<AccountDto> registerAccount(@PathVariable(value = "id") long id, @RequestBody AccountDto accountDto)
-			throws Exception {
-		PersonDto personDto = personService.findId(id);
-		if (Objects.nonNull(accountDto) && personService.findId(personDto.getId()) != null) {
-			accountService.register(accountDto, id);
-			accountDto.setPerson(personDto);
-			return new ResponseEntity<AccountDto>(accountDto, HttpStatus.CREATED);
+	public ResponseEntity<AccountDto> registerAccount(@PathVariable(value = "id") long id,
+			 @RequestBody AccountDto accountDto) throws Exception {
+		try {
+			if (Objects.nonNull(id)) {
+				try {
+					PersonDto personDto = personService.findId(id);
+					accountService.register(accountDto, id);
+					accountDto.setPerson(personDto);
+					return new ResponseEntity<AccountDto>(accountDto, HttpStatus.CREATED);
+				} catch (PersonException e) {
+					System.out.println(e.getMessage());
+					return new ResponseEntity<AccountDto>(HttpStatus.BAD_REQUEST);
+				}
+			} else {
+				throw new PersonException("Deve se passar o id de um usuario para criar uma conta.");
+			}
+		} catch (AccountExceptions e) {
+			System.out.println(e.getMessage());
+			return new ResponseEntity<AccountDto>(HttpStatus.BAD_REQUEST);
 		}
-		return new ResponseEntity<AccountDto>(HttpStatus.BAD_REQUEST);
+
 	}
-	
+
 	@RequestMapping(value = "/account/{id}", method = RequestMethod.GET)
 	public ResponseEntity<AccountDto> findAccount(@PathVariable(value = "id") long id) throws Exception {
 		if (Objects.nonNull(id)) {
@@ -48,8 +62,8 @@ public class AccountController {
 			}
 		}
 		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-	} 
-	
+	}
+
 	@RequestMapping(value = "/account/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<AccountDto> deleteAccount(@PathVariable(value = "id") long id) {
 		try {
@@ -59,6 +73,5 @@ public class AccountController {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 	}
-	
-	
+
 }
