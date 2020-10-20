@@ -3,6 +3,8 @@ package com.aoki.socialBank.controller;
 import java.util.List;
 import java.util.Objects;
 
+import javax.security.auth.login.AccountException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -68,7 +70,7 @@ public class AccountStatusController {
 
 	@RequestMapping(value = "/account/{id}/status", method = RequestMethod.GET)
 	public ResponseEntity<List<AccountStatusDto>> findAccoountStatus(@PathVariable(value = "id") long id)
-			throws AccountStatusException {
+			throws AccountStatusException, AccountException {
 		if (Objects.nonNull(id)) {
 			try {
 				List<AccountStatusDto> accountStatusDto = accountStatusService.findAccountStatusById(id);
