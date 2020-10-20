@@ -59,9 +59,11 @@ public class AccountController {
 				return new ResponseEntity<AccountDto>(accountDto, HttpStatus.OK);
 			} catch (Exception e) {
 				e.getMessage();
+				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 			}
+		} else {
+			throw new AccountExceptions("Id da conta nao pode ser vazio");
 		}
-		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	}
 
 	@RequestMapping(value = "/account/{id}", method = RequestMethod.DELETE)
@@ -69,7 +71,8 @@ public class AccountController {
 		try {
 			accountService.delete(id);
 			return new ResponseEntity<>(HttpStatus.ACCEPTED);
-		} catch (Exception e) {
+		} catch (AccountExceptions e) {
+			System.out.println(e.getMessage());
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 	}

@@ -47,7 +47,7 @@ public class AccountService {
 		
 	}
 
-	public AccountDto findAccount(long id) throws Exception {
+	public AccountDto findAccount(long id) throws AccountExceptions {
 		Account account = accountRepository.findById(id);
 		Person person = personRepopsitory.findById(id);
 		if (Objects.nonNull(account)) {
@@ -58,11 +58,16 @@ public class AccountService {
 								.name(person.getName())
 					.build()).build();
 		}
-		throw new Exception("id nao encontrado");
+		throw new AccountExceptions("id da conta nao encontrado");
 	}
 
-	public void delete(long id) {
-		accountRepository.deleteById(id);
+	public void delete(long id) throws AccountExceptions {
+		Account account = accountRepository.findById(id);
+		if(Objects.nonNull(account)) {
+			accountRepository.deleteById(id);
+		} else {
+			throw new AccountExceptions("Nenhuma conta encontrada.");
+		}
 	}
 
 }
