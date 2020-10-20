@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.aoki.socialBank.dto.AccountDto;
 import com.aoki.socialBank.dto.AccountStatusDto;
+import com.aoki.socialBank.exception.AccountStatusException;
 import com.aoki.socialBank.service.AccountService;
 import com.aoki.socialBank.service.AccountStatusService;
 import com.aoki.socialBank.service.PersonService;
@@ -35,10 +36,16 @@ public class AccountStatusController {
 		if (Objects.nonNull(accountDto)) {
 			AccountStatusDto accountStatusDto = new AccountStatusDto();
 			accountStatusDto.prePersist(accountStatusDto);
-			accountStatusService.unblock(accountDto.getId(), accountStatusDto);
-			return new ResponseEntity<AccountStatusDto>(HttpStatus.OK);
+			try {
+				accountStatusService.unblock(accountDto.getId(), accountStatusDto);
+				return new ResponseEntity<AccountStatusDto>(HttpStatus.OK);
+			} catch (AccountStatusException e) {
+				System.out.println(e.getLocalizedMessage());
+				return new ResponseEntity<AccountStatusDto>(HttpStatus.BAD_REQUEST);
+			}
+		} else {
+			throw new AccountStatusException("Conta nao encontrada");
 		}
-		return new ResponseEntity<AccountStatusDto>(HttpStatus.BAD_REQUEST);
 	}
 
 	@RequestMapping(value = "/account/block/{id}", method = RequestMethod.POST)
@@ -47,20 +54,32 @@ public class AccountStatusController {
 		if (Objects.nonNull(dto)) {
 			AccountStatusDto accountStatusDto = new AccountStatusDto();
 			accountStatusDto.prePersist(accountStatusDto);
-			accountStatusService.block(dto.getId(), accountStatusDto);
-			return new ResponseEntity<AccountStatusDto>(HttpStatus.OK);
+			try {
+				accountStatusService.block(dto.getId(), accountStatusDto);
+				return new ResponseEntity<AccountStatusDto>(HttpStatus.OK);
+			} catch (AccountStatusException e) {
+				System.out.println(e.getMessage());
+				return new ResponseEntity<AccountStatusDto>(HttpStatus.BAD_REQUEST);
+			}
+		} else {
+			throw new AccountStatusException("Conta nao encontrada");
 		}
-		return new ResponseEntity<AccountStatusDto>(HttpStatus.BAD_REQUEST);
-	}
-	
-	@RequestMapping(value = "/account/{id}/status", method = RequestMethod.GET)
-	public ResponseEntity<List<AccountStatusDto>> findAccoountStatus(@PathVariable(value = "id") long id
-			) throws Exception {
-		List<AccountStatusDto> accountStatusDto = accountStatusService.findAccountStatusById(id);
-		if (Objects.nonNull(accountStatusDto)) {
-			return new ResponseEntity<List<AccountStatusDto>>(accountStatusDto, HttpStatus.OK);
-		}
-		return new ResponseEntity<List<AccountStatusDto>>(HttpStatus.BAD_REQUEST);
 	}
 
+	@RequestMapping(value = "/account/{id}/status", method = RequestMethod.GET)
+	public ResponseEntity<List<AccountStatusDto>> findAccoountStatus(@PathVariable(value = "id") long id)
+			throws AccountStatusException {
+		if (Objects.nonNull(id)) {
+			try {
+				List<AccountStatusDto> accountStatusDto = accountStatusService.findAccountStatusById(id);
+				return new ResponseEntity<List<AccountStatusDto>>(accountStatusDto, HttpStatus.OK);
+			} catch (AccountStatusException e) {
+				System.out.println(e.getMessage());
+				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			}
+		} else {
+			throw new AccountStatusException("Problema ao passar o numero da conta");
+		}
+
+	}
 }
