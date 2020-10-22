@@ -12,22 +12,27 @@ import com.aoki.socialBank.repository.PersonRepopsitory;
 
 @Service
 public class PersonService {
-	
+
 	@Autowired
 	PersonRepopsitory personRepository;
 
-	public void register(PersonDto personDto) {
-		Person person = Person.builder().name(personDto.getName()).address(personDto.getAddress())
-				.email(personDto.getEmail()).birthDate(personDto.getBirthDate()).build();
-		personRepository.save(person);
+	public PersonDto register(PersonDto personDto) throws PersonException {
+		if(Objects.nonNull(personDto.getName())){
+			Person person = Person.builder().name(personDto.getName()).address(personDto.getAddress())
+					.email(personDto.getEmail()).birthDate(personDto.getBirthDate()).build();
+			personRepository.save(person);
+			return personDto;
+		} else {
+			throw new PersonException("Campos nulos");
+		}
+				
 	}
 
 	public PersonDto findId(long id) throws PersonException {
 		Person person = personRepository.findById(id);
-		if(Objects.nonNull(person)) {
-			return PersonDto.builder().id(person.getId()).name(person.getName())
-					.address(person.getAddress()).birthDate(person.getBirthDate())
-					.email(person.getEmail()).build();
+		if (Objects.nonNull(person)) {
+			return PersonDto.builder().id(person.getId()).name(person.getName()).address(person.getAddress())
+					.birthDate(person.getBirthDate()).email(person.getEmail()).build();
 		} else {
 			throw new PersonException("id nao encontrado");
 		}
@@ -41,7 +46,7 @@ public class PersonService {
 
 	public void delete(long id) throws PersonException {
 		Person person = personRepository.findById(id);
-		if(Objects.nonNull(person)) {
+		if (Objects.nonNull(person)) {
 			personRepository.deleteById(id);
 		} else {
 			throw new PersonException("Id nao encontrado");

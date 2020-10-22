@@ -27,14 +27,13 @@ public class AccountController {
 	@Autowired
 	PersonService personService;
 
-	@RequestMapping(value = "/account/{id}", method = RequestMethod.POST)
-	public ResponseEntity<AccountDto> registerAccount(@PathVariable(value = "id") long id,
-			 @RequestBody AccountDto accountDto) throws Exception {
+	@RequestMapping(value = "/account", method = RequestMethod.POST)
+	public ResponseEntity<AccountDto> registerAccount(@RequestBody AccountDto accountDto) throws Exception {
 		try {
-			if (Objects.nonNull(id)) {
+			if (Objects.nonNull(accountDto.getPerson().getId())) {
 				try {
-					PersonDto personDto = personService.findId(id);
-					accountService.register(accountDto, id);
+					PersonDto personDto = personService.findId(accountDto.getPerson().getId());
+					accountService.register(accountDto, accountDto.getPerson().getId());
 					accountDto.setPerson(personDto);
 					return new ResponseEntity<AccountDto>(accountDto, HttpStatus.CREATED);
 				} catch (PersonException e) {
