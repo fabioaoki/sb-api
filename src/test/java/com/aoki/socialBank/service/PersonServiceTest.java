@@ -37,6 +37,7 @@ public class PersonServiceTest {
 	@Test
 	public void testeCadastrar() throws PersonException {
 		// cenario
+		@SuppressWarnings("deprecation")
 		PersonDto dto = new PersonDto(null, "fabio", new Date(1993, 9, 11), "fabio@aoki", "rua osasco");
 
 		// acao
@@ -49,6 +50,7 @@ public class PersonServiceTest {
 	@Test
 	public void testeCadastrarTodosOsCampos() throws PersonException {
 		// cenario
+		@SuppressWarnings("deprecation")
 		PersonDto dto = new PersonDto(null, "fabio", new Date(1993, 9, 11), "fabio@aoki", "rua osasco");
 
 		// acao
@@ -70,16 +72,5 @@ public class PersonServiceTest {
 		personRepopsitory.deleteById(daoFalso.getId());
 	}
 	
-//	@Test(expected = PersonException.class)
-//	public void testeDeletarCadastroInexistente() throws PersonException {
-//		// cenario
-//		PersonDto dto = new PersonDto(null, "fabio", new Date(1993, 9, 11), "fabio@aoki", "rua osasco");
-//		
-//		Person person = new Person();
-//		
-//		personService.delete(dto.getId());
-//		
-//		//when(personRepopsitory.findById(dto.getId()).thenReturn(person));
-//	}
 
 }
